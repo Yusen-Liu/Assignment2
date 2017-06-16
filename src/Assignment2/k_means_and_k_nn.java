@@ -12,11 +12,15 @@ import java.math.*;
 
 
 public class k_means_and_k_nn {
+	// Array list for k-means
 	static ArrayList<Bus> busList = new ArrayList<Bus>();
+		// point( clar_volt, clar_ang, amhe_volt, amhe_ang, ...)
 	static double [][] volAn = new double [200][19];
+	
+	// Array list for knn
 	static ArrayList<Bus> busList2 = new ArrayList<Bus>();
 	static double [][] volAn2 = new double [20][19];
-	static ArrayList<String> type = new ArrayList<String>();
+	
 
 	
 	static double [][] cluster1 = new double [200][18];
@@ -28,33 +32,14 @@ public class k_means_and_k_nn {
 	public static void main(String[] args) {
 		
 		String dataFile = "/Users/Lysen/Documents/computer application/Assignment 2/measurements.csv";
+		
 		read_data(dataFile);
-		
-		//System.out.println("rdfid\t name \t voltage \t angle \t ");
-		/*
-		for(Bus f: busList){
-			System.out.printf("%s \t %f \t %f \t %f \t %f\t %f\t %f\t %f\t %f\t %f\t %f\t %f\n", f.time, f.param[0], f.param[1],f.param[2],f.param[3],f.param[4],f.param[5],f.param[6],f.param[7],f.param[8],f.param[9],f.param[10],f.param[11]);
-		}
-		
-		System.out.println("\nsub_rdfid: ");
-		for(String p: subrdfid){
-				System.out.printf("%s \n", p);
-		}
-		
-		System.out.println("\nvolAn:");
-		for(int i=0;i<volAn.length;i++){
-			for(int j=0; j<volAn[i].length;j++){
-			System.out.print(volAn[i][j]+" ");
-			}
-			System.out.println();
-		}
-		*/
-		
+
 		kMeanClustering();
 		
 		
 		// Print 4 clusters
-		
+		System.out.print("========================================================================");
 		System.out.println("\ncluster1:");
 		
 		for(int i=0;i<cluster1.length;i++){
@@ -67,7 +52,7 @@ public class k_means_and_k_nn {
 				System.out.println();
 			}
 		}
-
+		System.out.print("========================================================================");
 		System.out.println("\ncluster2:");
 		for(int i=0;i<cluster2.length;i++){
 			for(int j=0; j<cluster2[i].length;j++){
@@ -80,7 +65,7 @@ public class k_means_and_k_nn {
 				System.out.println();
 			}
 		}
-		
+		System.out.print("========================================================================");
 		System.out.println("\ncluster3:");
 		for(int i=0;i<cluster3.length;i++){
 			for(int j=0; j<cluster3[i].length;j++){
@@ -93,7 +78,7 @@ public class k_means_and_k_nn {
 				System.out.println();
 			}
 		}
-		
+		System.out.print("========================================================================");
 		System.out.println("\ncluster4:");
 		for(int i=0;i<cluster4.length;i++){
 			for(int j=0; j<cluster4[i].length;j++){
@@ -115,7 +100,7 @@ public class k_means_and_k_nn {
 		
 		kNN();
 		
-		
+		System.out.print("========================================================================");
 		System.out.println("\nTesting set:");
 		for(int i=0;i<volAn2.length;i++){
 			for(int j=0; j<volAn2[i].length;j++){
@@ -201,10 +186,9 @@ public class k_means_and_k_nn {
 						if( b > 18){											
 							b = 1;
 							for(int i=0; i<18; i++){
-								volAn[a][i] = param[i];
-								//System.out.print(volAn[a][i]+ " ");								
+								volAn[a][i] = param[i];																
 							}
-							//System.out.println();
+							
 							busList.add(new Bus(values[2], param));
 							a = a + 1 ;	
 						}
@@ -244,7 +228,7 @@ public class k_means_and_k_nn {
 				}
 				d[p] = Math.sqrt(d[p]);
 			}
-		// place the value in the closest cluster 
+		// place the point into the closest cluster 
 			double mind = d[0];
 			int min = 0;
 			for(int j=0; j<k; j++){
@@ -286,8 +270,10 @@ public class k_means_and_k_nn {
 			}
 		}
 		// calculate the new centroids
-		// for cluster1	
+	
+			// Array for centroids
 		double cen[][] = new double[4][18];
+			// Array for centroids(loop)
 		double cenNew[][] = new double[4][18];
 		for(int i=0; i<4; i++){
 			for(int j=0; j<18; j++){
@@ -297,6 +283,10 @@ public class k_means_and_k_nn {
 		}
 		
 		double sum[] = {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0};
+		
+		
+		// for cluster1	
+		
 		for(int i=0; i<18; i++){
 			for(int j=0; j<200;j++){
 				if( j<fl1 ){
@@ -310,6 +300,9 @@ public class k_means_and_k_nn {
 			System.out.printf("%.2f ",cen[0][i]);
 		}
 		System.out.println();
+		
+		
+		
 		// for cluster2
 		for(int i=0; i<18; i++){
 			sum[i] = 0;
@@ -327,6 +320,9 @@ public class k_means_and_k_nn {
 			System.out.printf("%.2f ",cen[1][i]);
 		}
 		System.out.println();
+		
+		
+		
 		// for cluster3
 		for(int i=0; i<18; i++){
 			sum[i] = 0;
@@ -344,6 +340,9 @@ public class k_means_and_k_nn {
 			System.out.printf("%.2f ",cen[2][i]);
 		}
 		System.out.println();
+		
+		
+		
 		// for cluster4
 		for(int i=0; i<18; i++){
 			sum[i] = 0;
@@ -361,7 +360,10 @@ public class k_means_and_k_nn {
 			System.out.printf("%.2f ",cen[3][i]);
 		}
 		System.out.println();
-		// calculate difference between new and old centroids
+		
+		
+		
+		// calculate error between new and arbitrary centroids
 		double di[] = new double [k];
 		for(int p=0; p<k; p++){
 			di[p] = 0;
@@ -372,14 +374,14 @@ public class k_means_and_k_nn {
 			di[p] = Math.sqrt(di[p]);
 		}
 		
-		System.out.print("First di:");
+		System.out.print("First error:");
 		for(int i=0;i<4;i++){
 			System.out.printf("%.2f ",di[i]);
 		}
 		System.out.println();
-		
-		
-		//loop calculate if difference is less than a specified tolerance clustering is done
+		System.out.print("========================================================================");
+		System.out.println();
+		//keep calculation until the error is less than a specified tolerance. clustering is done
 		while((di[0]>0.1)||(di[1]>0.1)||(di[2]>0.1)||(di[3]>0.1)){
 			
 			//empty clusters
@@ -398,11 +400,8 @@ public class k_means_and_k_nn {
 				for(int p=0; p<k; p++){
 					d[p] = 0;
 					for(int q=0; q<18; q++){
-					//System.out.printf("cen: %.2f, %.2f\n",cen[p][0], cen[p][1]);
-					//System.out.printf("voltage and angle: %.2f, %.2f\n", volAn[i][0], volAn[i][1]);
 						square = Math.pow((volAn[i][q]-cen[p][q]), 2);
 						d[p] = d[p] + square;
-					//System.out.printf("d: %.2f \n",d[p]);
 					}
 					d[p]= Math.sqrt(d[p]);
 				}
@@ -414,7 +413,7 @@ public class k_means_and_k_nn {
 						min = j;
 					}
 				}
-				//System.out.printf("mind:%.2f  min:%d\n", mind, min);
+
 				
 				if ( min==0 ){
 					for(int q=0; q<18; q++){
@@ -444,61 +443,8 @@ public class k_means_and_k_nn {
 					}
 				}
 			}
-			/*
-			System.out.println("\ncluster1:");
-		
-			for(int i=0;i<cluster1.length;i++){
-				for(int j=0; j<cluster1[i].length;j++){
-					if( i<fl1 ){
-						System.out.print(cluster1[i][j]+" ");
-					}
-				}
-				if( i<fl1 ){
-					System.out.println();
-				}
-			}
 
-			System.out.println("\ncluster2:");
-			for(int i=0;i<cluster2.length;i++){
-				for(int j=0; j<cluster2[i].length;j++){
-					if( i<fl2 ){
-						System.out.print(cluster2[i][j]+" ");
-						
-					}
-				}
-				if( i<fl2 ){
-					System.out.println();
-				}
-			}
-			
-			System.out.println("\ncluster3:");
-			for(int i=0;i<cluster3.length;i++){
-				for(int j=0; j<cluster3[i].length;j++){
-					if( i<fl3 ){
-						System.out.print(cluster3[i][j]+" ");
-						
-					}
-				}
-				if( i<fl3 ){
-					System.out.println();
-				}
-			}
-			
-			System.out.println("\ncluster4:");
-			for(int i=0;i<cluster4.length;i++){
-				for(int j=0; j<cluster4[i].length;j++){
-					if( i<fl4 ){
-						System.out.print(cluster4[i][j]+" ");
-						
-					}
-				}
-				if( i<fl4 ){
-					System.out.println();
-				}
-			}
-			*/
-			
-			// calculate centeroids again
+			// calculate new centeroids again
 			
 			for(int i=0; i<18; i++){
 				sum[i] = 0;
@@ -572,10 +518,15 @@ public class k_means_and_k_nn {
 			System.out.println();
 			
 			for(int p=0; p<k; p++){
-				di[p] = Math.sqrt(Math.pow((cen[p][0]-cenNew[p][0]), 2)+Math.pow((cen[p][1]-cenNew[p][1]), 2));
+				di[p] = 0;
+				for(int q=0; q<18; q++){
+					square = Math.pow((cen[p][q]-cenNew[p][q]), 2);
+					di[p] = di[p] + square;
+				}
+				d[p]= Math.sqrt(d[p]);
 			}
 			for(int i=0;i<4;i++){
-				System.out.printf("di=%.2f ",di[i]);
+				System.out.printf("error=%.2f ",di[i]);
 			}
 			System.out.println();
 			
@@ -585,7 +536,7 @@ public class k_means_and_k_nn {
 				}
 			}
 		}
-		// if difference is less than a specified tolerance clustering is done
+		
 	}
 	
 	public static void read_data2(String dataFile){
