@@ -7,8 +7,17 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import javax.swing.JFrame;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.table.AbstractTableModel;
+import javax.swing.table.JTableHeader;
+
 import java.math.*;
 
+import java.util.Vector;
+
+import javax.swing.table.AbstractTableModel;
 
 
 public class k_means_and_k_nn {
@@ -27,6 +36,8 @@ public class k_means_and_k_nn {
 	static double [][] cluster2 = new double [200][18];
 	static double [][] cluster3 = new double [200][18];
 	static double [][] cluster4 = new double [200][18];
+	
+	static String [][] time = new String [20][4];
 	static int fl1 = 0, fl2 = 0, fl3 = 0, fl4 = 0;
 	
 	public static void main(String[] args) {
@@ -36,63 +47,82 @@ public class k_means_and_k_nn {
 		read_data(dataFile);
 
 		kMeanClustering();
+
 		
-		
+		Object[][] output = new Object [55][4];
+	
+		String point;
+
 		// Print 4 clusters
-		System.out.print("========================================================================");
-		System.out.println("\ncluster1:");
-		
+
 		for(int i=0;i<cluster1.length;i++){
-			for(int j=0; j<cluster1[i].length;j++){
-				if( i<fl1 ){
-					System.out.print(cluster1[i][j]+"  ");
-				}
-			}
+		
 			if( i<fl1 ){
-				System.out.println();
+				point = "(";
+				for(int j=0; j<18;j++){
+				point = point + String.format("%.2f", cluster1[i][j]) +", "; 
+				
+				}
+				point = point +")";
+				output[i][0] = point;
+			
 			}
 		}
-		System.out.print("========================================================================");
-		System.out.println("\ncluster2:");
+
 		for(int i=0;i<cluster2.length;i++){
-			for(int j=0; j<cluster2[i].length;j++){
-				if( i<fl2 ){
-					System.out.print(cluster2[i][j]+"  ");
-					
-				}
-			}
+
 			if( i<fl2 ){
-				System.out.println();
+				point = "(";
+				for(int j=0; j<18;j++){
+				point = point + String.format("%.2f", cluster2[i][j]) +", "; 
+				
+				}
+				point = point + ")";
+				output[i][1] = point;
+				
 			}
 		}
-		System.out.print("========================================================================");
-		System.out.println("\ncluster3:");
+
 		for(int i=0;i<cluster3.length;i++){
-			for(int j=0; j<cluster3[i].length;j++){
-				if( i<fl3 ){
-					System.out.print(cluster3[i][j]+"  ");
-					
-				}
-			}
+
 			if( i<fl3 ){
-				System.out.println();
+				point = "(";
+				for(int j=0; j<18;j++){
+				point = point + String.format("%.2f", cluster3[i][j]) +", "; 
+				
+				}
+				point = point + ")";
+				output[i][2] = point;
+			
 			}
 		}
-		System.out.print("========================================================================");
-		System.out.println("\ncluster4:");
+
 		for(int i=0;i<cluster4.length;i++){
-			for(int j=0; j<cluster4[i].length;j++){
-				if( i<fl4 ){
-					System.out.print(cluster4[i][j]+"  ");
-					
-				}
-			}
+
 			if( i<fl4 ){
-				System.out.println();
+				point = "(";
+				for(int j=0; j<18;j++){
+				point = point + String.format("%.2f", cluster4[i][j]) +", "; 
+				
+				}
+				point = point + ")";
+				output[i][3] = point;
+				
 			}
 		}
 		System.out.println();
 		
+		
+		
+		String[] columnNames = {"Shut down of generator for maintenance", "High load rate during peak hours", "Disconnection of a line for maintenance", "Low load rate during night"};
+
+		JTable table = new JTable(output, columnNames);
+		JFrame jf = new JFrame();
+		jf.setTitle("Learning Set");
+		JScrollPane jsp = new JScrollPane(table);
+		jf.add(jsp);
+		jf.setBounds(0, 0, 500, 500);
+		jf.setVisible(true);
 		
 		// kNN
 		String dataFile2 = "/Users/Lysen/Documents/computer application/Assignment 2/analog.csv";
@@ -100,15 +130,63 @@ public class k_means_and_k_nn {
 		
 		kNN();
 		
-		System.out.print("========================================================================");
-		System.out.println("\nTesting set:");
+
+		Object[][] output2 = new Object [20][4];
+		fl1 = 0;
+		fl2 = 0;
+		fl3 = 0;
+		fl4 = 0;
 		for(int i=0;i<volAn2.length;i++){
-			for(int j=0; j<volAn2[i].length;j++){
-			System.out.print(volAn2[i][j]+"  ");
+			switch((int)volAn2[i][18]){
+				case 1:
+					point = "(";
+					for(int j=0; j<18;j++){
+					point = point + String.format("%.2f", volAn2[i][j]) +", "; 
+					
+					}
+					point = point + ")";
+					output2[fl1][0] = point;
+					fl1 = fl1 + 1;
+					break;
+				case 2:
+					point = "(";
+					for(int j=0; j<18;j++){
+					point = point + String.format("%.2f", volAn2[i][j]) +", "; 
+					
+					}
+					point = point + ")";
+					output2[fl2][1] = point;
+					fl2 = fl2 + 1;
+					break;
+				case 3:
+					point = "(";
+					for(int j=0; j<18;j++){
+					point = point + String.format("%.2f", volAn2[i][j]) +", "; 
+					
+					}
+					point = point + ")";
+					output2[fl3][2] = point;
+					fl3 = fl3 + 1;
+					break;
+				case 4:
+					point = "(";
+					for(int j=0; j<18;j++){
+					point = point + String.format("%.2f", volAn2[i][j]) +", "; 
+					
+					}
+					point = point + ")";
+					output2[fl4][3] = point;
+					fl4 = fl4 + 1;
+					break;
 			}
-			System.out.println();
 		}
-		
+		JTable table2 = new JTable(output2, columnNames);
+		JFrame jf2 = new JFrame();
+		jf2.setTitle("Testing Set");
+		JScrollPane jsp2 = new JScrollPane(table2);
+		jf2.add(jsp2);
+		jf2.setBounds(0, 0, 500, 500);
+		jf2.setVisible(true);
 		
 	}
 		
@@ -295,10 +373,16 @@ public class k_means_and_k_nn {
 			}
 		}
 		System.out.print("centroid1:");
+		System.out.printf("(");
 		for(int i=0;i<18;i++){
 			cen[0][i] = sum[i] / fl1;
-			System.out.printf("%.2f ",cen[0][i]);
+			if (i == 17){
+				System.out.printf("%.2f",cen[0][i]);
+			}else{
+				System.out.printf("%.2f, ",cen[0][i]);
+			}
 		}
+		System.out.printf(")");
 		System.out.println();
 		
 		
@@ -315,10 +399,16 @@ public class k_means_and_k_nn {
 			}
 		}
 		System.out.print("centroid2:");
+		System.out.printf("(");
 		for(int i=0;i<18;i++){
 			cen[1][i] = sum[i] / fl2;
-			System.out.printf("%.2f ",cen[1][i]);
+			if (i == 17){
+				System.out.printf("%.2f",cen[1][i]);
+			}else{
+				System.out.printf("%.2f, ",cen[1][i]);
+				}
 		}
+		System.out.printf(")");
 		System.out.println();
 		
 		
@@ -335,10 +425,17 @@ public class k_means_and_k_nn {
 			}
 		}
 		System.out.print("centroid3:");
+		System.out.printf("(");
 		for(int i=0;i<18;i++){
 			cen[2][i] = sum[i] / fl3;
-			System.out.printf("%.2f ",cen[2][i]);
+			if (i == 17){
+				System.out.printf("%.2f",cen[2][i]);
+			}
+			else{
+				System.out.printf("%.2f, ",cen[2][i]);
+				}
 		}
+		System.out.printf(")");
 		System.out.println();
 		
 		
@@ -355,10 +452,16 @@ public class k_means_and_k_nn {
 			}
 		}
 		System.out.print("centroid4:");
+		System.out.printf("(");
 		for(int i=0;i<18;i++){
 			cen[3][i] = sum[i] / fl4;
-			System.out.printf("%.2f ",cen[3][i]);
+			if (i == 17){
+				System.out.printf("%.2f",cen[3][i]);
+			}else{
+				System.out.printf("%.2f, ",cen[3][i]);
+				}
 		}
+		System.out.printf(")");
 		System.out.println();
 		
 		
@@ -376,7 +479,7 @@ public class k_means_and_k_nn {
 		
 		System.out.print("First error:");
 		for(int i=0;i<4;i++){
-			System.out.printf("%.2f ",di[i]);
+			System.out.printf("%.2f, ",di[i]);
 		}
 		System.out.println();
 		System.out.print("========================================================================");
@@ -457,10 +560,16 @@ public class k_means_and_k_nn {
 				}
 			}
 			System.out.print("centroid1:");
+			System.out.printf("(");
 			for(int i=0;i<18;i++){
 				cenNew[0][i] = sum[i] / fl1;
-				System.out.printf("%.2f ",cenNew[0][i]);
+				if (i == 17 ){
+					System.out.printf("%.2f",cenNew[0][i]);
+				}else{
+					System.out.printf("%.2f, ",cenNew[0][i]);
+				}
 			}
+			System.out.printf(")");
 			System.out.println();
 			
 			// for cluster2
@@ -475,10 +584,16 @@ public class k_means_and_k_nn {
 				}
 			}
 			System.out.print("centroid2:");
+			System.out.printf("(");
 			for(int i=0;i<18;i++){
 				cenNew[1][i] = sum[i] / fl2;
-				System.out.printf("%.2f ",cenNew[1][i]);
+				if (i ==  17){
+					System.out.printf("%.2f",cenNew[1][i]);
+				}else{
+					System.out.printf("%.2f, ",cenNew[1][i]);
+				}
 			}
+			System.out.printf(")");
 			System.out.println();
 			
 			// for cluster3
@@ -493,10 +608,16 @@ public class k_means_and_k_nn {
 				}
 			}
 			System.out.print("centroid3:");
+			System.out.printf("(");
 			for(int i=0;i<18;i++){
 				cenNew[2][i] = sum[i] / fl3;
-				System.out.printf("%.2f ",cenNew[2][i]);
+				if ( i == 17){
+					System.out.printf("%.2f",cenNew[2][i]);
+				}else{
+					System.out.printf("%.2f, ",cenNew[2][i]);
+				}
 			}
+			System.out.printf(")");
 			System.out.println();
 			
 			// for cluster4
@@ -511,10 +632,16 @@ public class k_means_and_k_nn {
 				}
 			}
 			System.out.print("centroid4:");
+			System.out.printf("(");
 			for(int i=0;i<18;i++){
 				cenNew[3][i] = sum[i] / fl4;
-				System.out.printf("%.2f ",cenNew[3][i]);
+				if ( i == 17 ){
+					System.out.printf("%.2f",cenNew[3][i]);
+				}else{
+					System.out.printf("%.2f, ",cenNew[3][i]);
+				}
 			}
+			System.out.printf(")");
 			System.out.println();
 			
 			for(int p=0; p<k; p++){
@@ -690,6 +817,7 @@ public class k_means_and_k_nn {
 				}
 
 			}
+
 			if((fl[0] >= fl[1])&&(fl[0] >= fl[2])&&(fl[0] >= fl[3])){
 				volAn2[o][18] = 1;
 			}else if((fl[1] >= fl[0])&&(fl[1] >= fl[2])&&(fl[1] >= fl[3])){
@@ -699,12 +827,15 @@ public class k_means_and_k_nn {
 			}else{
 				volAn2[o][18] = 4;
 			}
-				
+			
+
+			
 		}
 		
 		
 	}
 	
+
 	
 }
 
