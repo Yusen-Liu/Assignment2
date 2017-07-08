@@ -522,24 +522,28 @@ public class k_means_and_k_nn {
 					for(int q=0; q<18; q++){
 						cluster1[fl1][q]=volAn[i][q];
 					}
+					volAn[i][18] = 1;
 					fl1 = fl1 +1;
 				}else{
 					if( min==1 ){
 						for(int q=0; q<18; q++){
 							cluster2[fl2][q]=volAn[i][q];
 						}
+						volAn[i][18] = 2;
 						fl2 = fl2 +1;
 					}else{
 						if ( min==2 ){
 							for(int q=0; q<18; q++){
 								cluster3[fl3][q]=volAn[i][q];
 							}
+							volAn[i][18] = 3;
 							fl3 = fl3 +1;
 						}else{
 							if ( min== 3){
 								for(int q=0; q<18; q++){
 									cluster4[fl4][q]=volAn[i][q];
 								}
+								volAn[i][18] = 4;
 								fl4 = fl4 +1;
 							}
 						}
